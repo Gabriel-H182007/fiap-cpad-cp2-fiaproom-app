@@ -31,7 +31,7 @@ export default function Login() {
     const e = {};
 
     if (!email.trim()) {
-        e.email = 'O e-mail é obrigatório';
+        e.email = 'E-mail obrigatório';
     } else if (!emailRegex.test(email)) {
         e.email = 'E-mail inválido';
     }

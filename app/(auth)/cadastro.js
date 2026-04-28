@@ -41,13 +41,23 @@ export default function Cadastro() {
 
   const validar = () => {
     const e = {};
-    if (!nome.trim())          e.nome   = 'Nome obrigatório';
-    if (!email.trim()) e.email = 'E-mail obrigatório';
-    if (!emailRegex.test(email))  e.email  = 'E-mail inválido';
-    if (!senha) e.senha = 'Senha obrigatória';
-    if (senha.length < 6) e.senha = 'Senha deve ter mínimo 6 caracteres';
-    if (!confirmarSenha) e.confirmarSenha = 'Confirme a senha';
-    if (senha != confirmarSenha) e.confirmarSenha = "Senha diferente da informada acima";
+    if (!nome.trim())  e.nome   = 'Nome obrigatório';
+    if (!email.trim()) {
+        e.email = 'E-mail obrigatório';
+    }else if (!emailRegex.test(email)) {
+        e.email = 'E-mail inválido';
+    }
+    if (!senha){
+        e.senha = 'Senha obrigatória';
+    } else if (senha.length < 6){
+        e.senha = 'Senha deve ter mínimo 6 caracteres';
+    } 
+    if (!confirmarSenha){
+        e.confirmarSenha = 'Confirme a senha';
+    } else if (senha != confirmarSenha) {
+        e.confirmarSenha = "Senha diferente da informada acima";
+    }
+
     setErros(e);
     return Object.keys(e).length === 0;
   };
@@ -115,7 +125,7 @@ const handleCadastro = async () => {
           />
         </Campo>
         <Campo label="Senha" erro={erros.senha}>
-          <View style={[styles.confirmarSenhaContainer, erros.confirmarSenha && styles.inputErro]}>
+          <View style={[styles.senhaContainer, erros.senha && styles.inputErro]}>
             <TextInput
               ref={senhaRef}
               placeholder="Senha"
