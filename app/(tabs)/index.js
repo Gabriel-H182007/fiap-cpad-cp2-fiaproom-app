@@ -1,8 +1,26 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useEffect} from 'react';
+import { useAuth } from "../../context/AuthContext";
  
 export default function Fiaproom() {
   const router = useRouter();
+  const { user, logout, loading  } = useAuth();
+
+  useEffect(() => {
+    if (!loading && !user) {
+        router.replace("/(auth)/login");
+    }
+  }, [user, loading, router]);
+
+  const handleLogout = async () => {
+    try {
+       await logout();
+       router.replace("/(auth)/login");
+    } catch (e) {
+        console.log(e);
+    }
+  };
   const app = {
     titulo: "🚀FiapRoom",
     descricao: "📍Encontre salas livres para estudos na FIAP de forma ágil e prática",
@@ -31,6 +49,9 @@ export default function Fiaproom() {
       <TouchableOpacity style={styles.botao} onPress={() => router.push('/reservas')}>
         <Text style={styles.botaoTexto}>Reservar uma sala disponível</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.logout} onPress={handleLogout}>
+        <Text style={styles.botaoTexto}>Fazer Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -47,5 +68,6 @@ const styles = StyleSheet.create({
   saudacao: {fontSize: 18, marginBottom: 26, color: '#fff'},
   botao:     { backgroundColor: '#E83D84', padding: 16, borderRadius: 12, marginBottom: 24, width: 300},
   botaoTexto:{ color: '#fff', fontSize: 20, fontWeight: '600', textAlign: 'center' },
+   logout:{ backgroundColor: '#ff4444',padding: 16, borderRadius: 12, marginBottom: 24, width: 300},
 });
  

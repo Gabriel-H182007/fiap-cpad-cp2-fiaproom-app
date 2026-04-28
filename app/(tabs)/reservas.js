@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
 
@@ -27,55 +27,70 @@ export default function Reservas() {
     if (salaReservada) {
         return (
             <View style={styles.container}>
-                <Text style={styles.titulo}>✅ Reserva Feita!</Text>
-                
-                <Text style={styles.mensagemSucesso}>
-                    A sala {salaReservada.sala} (Andar {salaReservada.andar}) foi reservada com sucesso para o horário de {salaReservada.horario}.
-                </Text>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={styles.titulo}>✅ Reserva Feita!</Text>
+                    
+                    <Text style={styles.mensagemSucesso}>
+                        A sala {salaReservada.sala} (Andar {salaReservada.andar}) foi reservada com sucesso para o horário de {salaReservada.horario}.
+                    </Text>
 
-                <TouchableOpacity onPress={() => router.back()}>
-                    <Text style={styles.botaoVoltar}>← Voltar ao menu</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity onPress={() => router.back()}>
+                        <Text style={styles.botaoVoltar}>← Voltar ao menu</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     }
 
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.titulo}>📅 {app.titulo}</Text>
-            
-            {salasDisponiveis.map((item, index) => (
-                <TouchableOpacity 
-                    key={index} 
-                    style={styles.card}
-                    onPress={() => setSalaReservada(item)} 
-                >
-                    <View style={styles.linha}>
-                        <Text style={styles.numero}>🏫 Sala {item.sala} - Andar {item.andar}</Text>
-                    </View>
-                    <View style={styles.linha}>
-                        <Text style={styles.info}>🏢 Unidade - {item.unidade}</Text>
-                    </View>
-                    <View style={styles.linha}>
-                        <Text style={styles.horario}>Horário: 🕒 {item.horario}</Text>
-                    </View>
-                    <View style={styles.linhaCentralizada}>
-                        <Text style={styles.textoAcao}>👉 Clique para reservar</Text>
-                    </View>
-                </TouchableOpacity>
-            ))}
+  <FlatList
+    data={salasDisponiveis}
+    keyExtractor={(item, index) => index.toString()}
+    
+    contentContainerStyle={styles.container}
 
-            <TouchableOpacity onPress={() => router.back()}>
-                <Text style={styles.botaoVoltar}>← Voltar</Text>
-            </TouchableOpacity>
+    ListHeaderComponent={
+      <Text style={styles.titulo}>📅 {app.titulo}</Text>
+    }
+
+    renderItem={({ item }) => (
+      <TouchableOpacity 
+        style={styles.card}
+        onPress={() => setSalaReservada(item)}
+      >
+        <Text style={styles.numero}>
+          🏫 Sala {item.sala} - Andar {item.andar}
+        </Text>
+
+        <Text style={styles.info}>
+          🏢 Unidade - {item.unidade}
+        </Text>
+
+        <Text style={styles.horario}>
+          🕒 {item.horario}
+        </Text>
+
+        <View style={styles.linhaCentralizada}>
+          <Text style={styles.textoAcao}>
+            👉 Clique para reservar
+          </Text>
         </View>
-    );
+      </TouchableOpacity>
+    )}
+
+    ListFooterComponent={
+      <TouchableOpacity onPress={() => router.back()}>
+        <Text style={styles.botaoVoltar}>← Voltar</Text>
+      </TouchableOpacity>
+    }
+  />
+);
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#363636', padding:24},
-  card: {backgroundColor: '#FF2D6F', width: '85%', padding: 10, borderRadius: 12, marginBottom: 16, justifyContent: 'center'},
+  container: { flexGrow: 1, backgroundColor: '#363636', padding:24},
+  card: {backgroundColor: '#FF2D6F', width: '85%', padding: 10, borderRadius: 12, marginBottom: 16, justifyContent: 'center', alignSelf: 'center'},
   linha: {flexDirection: 'row', justifyContent: 'space-between'},
   linhaCentralizada: {flexDirection: 'row', justifyContent: 'center', marginTop: 10, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.3)', paddingTop: 8},
   titulo: {fontSize: 32,fontWeight: 'bold', textAlign: 'center', marginBottom: 30, color: '#fff'},
