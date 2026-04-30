@@ -105,6 +105,7 @@ Navegação fluida entre funcionalidades
 📌 Diferencial escolhido
 
 O grupo implementou o uso de notificações locais com Expo Notifications, incluindo notificações imediatas e notificações agendadas.
+------------------------------------------------------------------------------------------------------------------------------------
 
 💡 Justificativa
 
@@ -116,6 +117,8 @@ recebe uma confirmação instantânea, garantindo que a ação foi concluída co
 recebe um lembrete automático antes do horário da reserva, evitando esquecimentos
 
 Essa funcionalidade aproxima o aplicativo de soluções reais utilizadas no mercado, aumentando a praticidade e a confiabilidade do sistema.
+
+------------------------------------------------------------------------------------------------------------------------------------
 
 ⚙️ Como foi implementado (resumo técnico)
 
