@@ -1,6 +1,16 @@
 import { AuthProvider, useAuth } from "../context/AuthContext";
 import { Stack } from "expo-router";
 import { View, Text } from "react-native";
+import { useEffect } from "react";
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 
 function Rotas() {
   const { user, loading } = useAuth();
@@ -25,6 +35,18 @@ function Rotas() {
 }
 
 export default function Layout() {
+  useEffect(() => {
+    async function configurarNotificacoes() {
+      const { status } = await Notifications.requestPermissionsAsync();
+
+      if (status !== "granted") {
+        alert("Permita notificações para receber lembretes!");
+      }
+    }
+
+    configurarNotificacoes();
+  }, []);
+
   return (
     <AuthProvider>
       <Rotas />

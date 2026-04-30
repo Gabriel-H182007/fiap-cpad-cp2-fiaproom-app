@@ -1,7 +1,15 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
- 
+
+const cores = {
+  fundo: '#121212',
+  card: '#1E1E1E',
+  principal: '#FF2D6F',
+  texto: '#FFFFFF',
+  textoSecundario: '#AAAAAA'
+};
+
 export default function Salas() {
   const router = useRouter();
   const [salas, setSalas] = useState([]);
@@ -18,56 +26,119 @@ export default function Salas() {
     setSalas(laboratorios);
   }, []);
 
-  const salasLivres = salas.filter(sala => sala.livre);
-
-  const renderItem = ({ item }) => (
-    <View style={styles.card}>
-      <Text style={styles.numero}>🏫 Sala {item.sala} - Andar {item.andar}</Text>
-      <Text style={styles.info}>🏢 Unidade - {item.unidade}</Text>
-      <Text style={styles.status}>🕒 {item.horario}</Text>
-      <Text style={styles.status}>✅ Livre</Text>
-    </View>
-  );
+  const salasLivres = salas.filter(s => s.livre);
 
   return (
     <FlatList
       data={salasLivres}
       keyExtractor={(item) => item.sala}
-      renderItem={renderItem}
       contentContainerStyle={styles.container}
+
       ListHeaderComponent={
-        <Text style={styles.titulo}>🔎 Salas disponíveis</Text>
+        <Text style={styles.titulo}>Salas disponíveis</Text>
       }
+
+      renderItem={({ item }) => (
+        <View style={styles.card}>
+          <Text style={styles.sala}>Sala {item.sala} - Andar {item.andar}</Text>
+          <Text style={styles.info}>Unidade: {item.unidade}</Text>
+          <Text style={styles.info}>Horário: {item.horario}</Text>
+
+          <View style={styles.statusLivre}>
+            <Text style={styles.textoStatus}>Disponível</Text>
+          </View>
+        </View>
+      )}
+
       ListFooterComponent={
         <>
-          <TouchableOpacity style={styles.botaoReserva} onPress={() => router.push('/reservas')}>
-            <Text style={styles.textoBotaoReserva}>📅 Faça sua reserva</Text>
+          <TouchableOpacity style={styles.botao} onPress={() => router.push('/reservas')}>
+            <Text style={styles.botaoTexto}>Reservar sala</Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => router.back()}>
-            <Text style={styles.botaoVoltar}>← Voltar</Text>
+            <Text style={styles.voltar}>Voltar</Text>
           </TouchableOpacity>
         </>
       }
+
       ListEmptyComponent={
-        <Text style={styles.vazio}>
-          ❌ Nenhuma sala livre disponível no momento
-        </Text>
+        <Text style={styles.vazio}>Nenhuma sala disponível</Text>
       }
     />
   );
 }
+
 const styles = StyleSheet.create({
-  container: { flexGrow: 1, backgroundColor: '#363636', padding:24},
-  card: {backgroundColor: '#FF2D6F', width: '85%', padding: 10, borderRadius: 12, marginBottom: 16, justifyContent: 'center', alignSelf: 'center'},
-  linha: {flexDirection: 'row', justifyContent: 'space-between'},
-  titulo: {fontSize: 32,fontWeight: 'bold', textAlign: 'center', marginBottom: 30, color: '#fff'},
-  numero: {fontSize: 16, marginBottom: 8, fontWeight: 'bold', color: '#fff'},
-  info: {fontSize: 16, marginBottom: 8, fontWeight: 'bold', color: '#fff'},
-  horario: {fontSize: 16, marginBottom: 8, fontWeight: 'bold', color: '#fff'},
-  status: {fontSize: 16, marginBottom: 8, fontWeight: 'bold', color: '#fff'},
-  botaoReserva: {fontSize: 14, backgroundColor: '#E83D84', padding: 14, borderRadius: 12, marginTop: 14, width: '85%', marginBottom: 12, alignSelf: 'center'},
-  textoBotaoReserva: {color: '#fff',fontSize: 18,fontWeight: 'bold',textAlign: 'center'},
-  botaoVoltar: { fontSize: 20, color: '#E83D84', fontWeight: '600', textAlign: 'center', justifyContent: 'center', marginBottom: 20},
-  vazio: {fontSize: 25, marginBottom: 20, marginTop: 30, fontWeight: 'bold',  textAlign: 'center', color: '#fff'},
+  container: {
+    flexGrow: 1,
+    backgroundColor: cores.fundo,
+    padding: 20
+  },
+
+  titulo: {
+    fontSize: 26,
+    fontWeight: '700',
+    color: cores.texto,
+    textAlign: 'center',
+    marginBottom: 20
+  },
+
+  card: {
+    backgroundColor: cores.card,
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 12
+  },
+
+  sala: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: cores.texto
+  },
+
+  info: {
+    fontSize: 14,
+    color: cores.textoSecundario,
+    marginTop: 4
+  },
+
+  statusLivre: {
+    marginTop: 10,
+    backgroundColor: '#3CB371',
+    padding: 6,
+    borderRadius: 6,
+    alignSelf: 'flex-start'
+  },
+
+  textoStatus: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '600'
+  },
+
+  botao: {
+    backgroundColor: cores.principal,
+    padding: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 20
+  },
+
+  botaoTexto: {
+    color: '#fff',
+    fontWeight: '600'
+  },
+
+  voltar: {
+    textAlign: 'center',
+    marginTop: 15,
+    color: cores.principal
+  },
+
+  vazio: {
+    color: cores.texto,
+    textAlign: 'center',
+    marginTop: 40
+  }
 });

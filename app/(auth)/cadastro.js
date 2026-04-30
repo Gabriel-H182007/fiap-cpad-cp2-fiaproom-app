@@ -1,10 +1,20 @@
-import { useState, useContext, useRef} from 'react';
+import { useState, useRef } from 'react';
 import { useAuth } from "../../context/AuthContext";
 import {
   View, Text, TextInput, TouchableOpacity,
   StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert
 } from 'react-native';
 import { useRouter } from "expo-router";
+
+const cores = {
+  fundo: '#121212',
+  card: '#1E1E1E',
+  principal: '#FF2D6F',
+  sucesso: '#3CB371',
+  texto: '#FFFFFF',
+  textoSecundario: '#AAAAAA',
+  erro: '#FF4C4C'
+};
 
 const Campo = ({ label, erro, children }) => (
   <View style={styles.campoWrapper}>
@@ -16,46 +26,54 @@ const Campo = ({ label, erro, children }) => (
 
 export default function Cadastro() {
   const router = useRouter();
+  const { cadastro } = useAuth();
 
-  const [nome, setNome]             = useState('');
-  const [email, setEmail]           = useState('');
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-  const [senhaVisivel, setSenhaVisivel] = useState(false);
-  const [confirmarSenhaVisivel, setConfirmarSenhaVisivel] = useState(false);
   const [confirmarSenha, setConfirmarSenha] = useState('');
 
-  const [erros, setErros]           = useState({});
+  const [senhaVisivel, setSenhaVisivel] = useState(false);
+  const [confirmarSenhaVisivel, setConfirmarSenhaVisivel] = useState(false);
+
+  const [erros, setErros] = useState({});
   const [carregando, setCarregando] = useState(false);
+
   const emailRef = useRef(null);
   const senhaRef = useRef(null);
   const confirmarSenhaRef = useRef(null);
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const limparForm = () => {
-  setNome('');
-  setEmail('');
-  setSenha('');
-  setConfirmarSenha('');
-  setErros({});
-};
+    setNome('');
+    setEmail('');
+    setSenha('');
+    setConfirmarSenha('');
+    setErros({});
+  };
 
   const validar = () => {
     const e = {};
-    if (!nome.trim())  e.nome   = 'Nome obrigatório';
+
+    if (!nome.trim()) e.nome = 'Nome obrigatório';
+
     if (!email.trim()) {
-        e.email = 'E-mail obrigatório';
-    }else if (!emailRegex.test(email)) {
-        e.email = 'E-mail inválido';
+      e.email = 'E-mail obrigatório';
+    } else if (!emailRegex.test(email)) {
+      e.email = 'E-mail inválido';
     }
-    if (!senha){
-        e.senha = 'Senha obrigatória';
-    } else if (senha.length < 6){
-        e.senha = 'Senha deve ter mínimo 6 caracteres';
-    } 
-    if (!confirmarSenha){
-        e.confirmarSenha = 'Confirme a senha';
-    } else if (senha != confirmarSenha) {
-        e.confirmarSenha = "Senha diferente da informada acima";
+
+    if (!senha) {
+      e.senha = 'Senha obrigatória';
+    } else if (senha.length < 6) {
+      e.senha = 'Mínimo 6 caracteres';
+    }
+
+    if (!confirmarSenha) {
+      e.confirmarSenha = 'Confirme a senha';
+    } else if (senha !== confirmarSenha) {
+      e.confirmarSenha = 'Senhas diferentes';
     }
 
     setErros(e);
@@ -64,22 +82,19 @@ export default function Cadastro() {
 
   const formularioValido =
     nome.trim() &&
-    emailRegex.test(email)&&
+    emailRegex.test(email) &&
     senha.length >= 6 &&
-    senha === confirmarSenha ;
+    senha === confirmarSenha;
 
-const { cadastro } = useAuth();
-
-const handleCadastro = async () => {
+  const handleCadastro = async () => {
     if (!validar()) return;
 
     try {
-        setCarregando(true);
-        await cadastro(nome, email, senha);
-        limparForm();
-        Alert.alert('🎉 Sucesso!', `Cadastro realizado! 🎉 `);
-        router.replace('/(auth)/login');
-
+      setCarregando(true);
+      await cadastro(nome, email, senha);
+      limparForm();
+      Alert.alert('Sucesso', 'Cadastro realizado!');
+      router.replace('/(auth)/login');
     } catch (e) {
       console.log(e);
     } finally {
@@ -92,17 +107,15 @@ const handleCadastro = async () => {
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <ScrollView
-        contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="handled"
-      >
-        <Text style={styles.titulo}>📝 Cadastro</Text>
-        <Text style={styles.subTitulo}>Cadastre-se para poder logar no app!</Text>
+      <ScrollView contentContainerStyle={styles.container}>
+        
+        <Text style={styles.titulo}>Cadastro</Text>
+        <Text style={styles.subTitulo}>Crie sua conta</Text>
 
-         {/* Nome */}
-        <Campo label="Nome completo" erro={erros.nome}>
+        <Campo label="Nome" erro={erros.nome}>
           <TextInput
-            placeholder="Nome Completo"
+            placeholder="Seu nome"
+            placeholderTextColor="#888"
             value={nome}
             onChangeText={setNome}
             returnKeyType="next"
@@ -110,11 +123,12 @@ const handleCadastro = async () => {
             style={[styles.input, erros.nome && styles.inputErro]}
           />
         </Campo>
-          {/* E-mail */}
+
         <Campo label="E-mail" erro={erros.email}>
           <TextInput
             ref={emailRef}
-            placeholder="E-mail"
+            placeholder="seu@email.com"
+            placeholderTextColor="#888"
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
@@ -124,52 +138,48 @@ const handleCadastro = async () => {
             style={[styles.input, erros.email && styles.inputErro]}
           />
         </Campo>
+
         <Campo label="Senha" erro={erros.senha}>
-          <View style={[styles.senhaContainer, erros.senha && styles.inputErro]}>
+          <View style={[styles.inputContainer, erros.senha && styles.inputErro]}>
             <TextInput
               ref={senhaRef}
               placeholder="Senha"
+              placeholderTextColor="#888"
               value={senha}
               onChangeText={setSenha}
               secureTextEntry={!senhaVisivel}
-              autoCapitalize="none"
-              returnKeyType="next"
-              onSubmitEditing={() => confirmarSenhaRef.current.focus()}
-              style={[styles.inputSenha]}
+              style={styles.inputSenha}
             />
-            <Text
-              onPress={() => setSenhaVisivel(!senhaVisivel)}
-              style={styles.olho}
-            >
+            <Text onPress={() => setSenhaVisivel(!senhaVisivel)} style={styles.olho}>
               {senhaVisivel ? '🙈' : '👁️'}
             </Text>
           </View>
         </Campo>
-         <Campo label="Confirmar Senha" erro={erros.confirmarSenha}>
-           <View style={[styles.confirmarSenhaContainer, erros.confirmarSenha && styles.inputErro]}>
+
+        <Campo label="Confirmar senha" erro={erros.confirmarSenha}>
+          <View style={[styles.inputContainer, erros.confirmarSenha && styles.inputErro]}>
             <TextInput
               ref={confirmarSenhaRef}
-              placeholder="Confirmar Senha"
+              placeholder="Confirme a senha"
+              placeholderTextColor="#888"
               value={confirmarSenha}
               onChangeText={setConfirmarSenha}
               secureTextEntry={!confirmarSenhaVisivel}
-              autoCapitalize="none"
-              returnKeyType="next"
-              style={[styles.inputSenha]}
+              style={styles.inputSenha}
             />
-            <Text onPress={() => setConfirmarSenhaVisivel(!confirmarSenhaVisivel)}style={styles.olho}>
+            <Text onPress={() => setConfirmarSenhaVisivel(!confirmarSenhaVisivel)} style={styles.olho}>
               {confirmarSenhaVisivel ? '🙈' : '👁️'}
             </Text>
-           </View>
+          </View>
         </Campo>
-        {/* Botão */}
+
         <TouchableOpacity
           style={[
-              styles.botao,
-              { backgroundColor: formularioValido ? '#3CB371' : '#E83D84' }
-            ]}
-            onPress={handleCadastro}
-            disabled={carregando}
+            styles.botao,
+            { backgroundColor: formularioValido ? cores.sucesso : cores.principal }
+          ]}
+          onPress={handleCadastro}
+          disabled={carregando}
         >
           <Text style={styles.botaoTexto}>
             {carregando ? 'Enviando...' : 'Cadastrar'}
@@ -177,58 +187,86 @@ const handleCadastro = async () => {
         </TouchableOpacity>
 
       </ScrollView>
-     </KeyboardAvoidingView>
-    );
-   }
-   const styles = StyleSheet.create({
-    container: {
-        flexGrow: 1,
-        justifyContent: 'center',
-        padding: 24,
-        paddingBottom: 60,
-        backgroundColor: '#363636',
-    },
-    titulo: {
-        fontSize: 32,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginBottom: 24,
-        color: '#FF2D6F',
-    },
-    subTitulo: {fontSize: 28,textAlign: 'center', marginBottom: 38, color: '#f5f5f5'},
-    campoWrapper: { marginBottom: 16 },
-    label: { fontSize: 14, fontWeight: '600', color: '#f5f5f5', marginBottom: 6 },
-    input: {
-        backgroundColor: '#fff',
-        borderWidth: 1,
-        borderColor: '#ddd',
-        borderRadius: 10,
-        padding: 14,
-        fontSize: 16,
-    },
-    
-    inputSenha: {flex: 1,padding: 14,fontSize: 16,backgroundColor: '#fff', borderRadius: 10,},
-    inputErro: { borderColor: 'red' },
-    erro: { color: 'red', fontSize: 12, marginTop: 4},
-    senhaContainer: {
-    flexDirection: 'row', alignItems: 'center',
-    backgroundColor: '#fff', borderWidth: 1, borderColor: '#ddd',
-    borderRadius: 10, marginBottom: 8,
+    </KeyboardAvoidingView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    padding: 24,
+    backgroundColor: cores.fundo
   },
-  confirmarSenhaContainer: {
-    flexDirection: 'row', alignItems: 'center',
-    backgroundColor: '#fff', borderWidth: 1, borderColor: '#ddd',
-    borderRadius: 10, marginBottom: 8,
+
+  titulo: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: cores.texto,
+    textAlign: 'center'
   },
-  olho: { padding: 14, fontSize: 20 },
-  botao: {
-    backgroundColor: '#FF2D6F',
+
+  subTitulo: {
+    fontSize: 16,
+    color: cores.textoSecundario,
+    textAlign: 'center',
+    marginBottom: 30
+  },
+
+  campoWrapper: { marginBottom: 16 },
+
+  label: {
+    color: cores.texto,
+    marginBottom: 6,
+    fontWeight: '600'
+  },
+
+  input: {
+    backgroundColor: cores.card,
     borderRadius: 10,
-    padding: 16,
-    alignItems: 'center',
-    marginTop: 24,
+    padding: 14,
+    color: cores.texto
   },
-  botaoTexto: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
+
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: cores.card,
+    borderRadius: 10
+  },
+
+  inputSenha: {
+    flex: 1,
+    padding: 14,
+    color: cores.texto
+  },
+
+  olho: {
+    padding: 12,
+    fontSize: 18
+  },
+
+  inputErro: {
+    borderWidth: 1,
+    borderColor: cores.erro
+  },
+
+  erro: {
+    color: cores.erro,
+    fontSize: 12,
+    marginTop: 4
+  },
+
+  botao: {
+    marginTop: 20,
+    padding: 14,
+    borderRadius: 10,
+    alignItems: 'center'
+  },
+
+  botaoTexto: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16
+  }
 });
-
-
