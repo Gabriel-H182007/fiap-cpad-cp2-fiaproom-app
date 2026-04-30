@@ -107,7 +107,7 @@ Navegação fluida entre funcionalidades
 O grupo implementou o uso de notificações locais com Expo Notifications, incluindo notificações imediatas e notificações agendadas.
 ------------------------------------------------------------------------------------------------------------------------------------
 
-💡 Justificativa
+##💡 Justificativa
 
 Esse diferencial foi escolhido porque agrega valor direto à experiência do usuário, tornando o aplicativo mais útil no dia a dia.
 
@@ -120,7 +120,7 @@ Essa funcionalidade aproxima o aplicativo de soluções reais utilizadas no merc
 
 ------------------------------------------------------------------------------------------------------------------------------------
 
-⚙️ Como foi implementado (resumo técnico)
+##⚙️ Como foi implementado (resumo técnico)
 
 A funcionalidade foi desenvolvida utilizando a biblioteca Expo Notifications, responsável pelo gerenciamento de notificações locais no ambiente React Native com Expo.
 
