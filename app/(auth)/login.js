@@ -61,10 +61,9 @@ export default function Login() {
             Alert.alert('Login realizado!', `Bem-vindo(a), ${email}! 🎉`);
             router.replace("/(tabs)");
         } else {
-            setErros(prev => ({
-            ...prev,
-            senha: 'E-mail ou senha incorretos'
-            }));
+            setErros({
+                geral: 'E-mail ou senha incorretos'
+            });
         }
 
     } catch (e) {
@@ -123,6 +122,9 @@ export default function Login() {
                     </Text>
                 </View>
             </Campo>
+            {erros.geral && (
+              <Text style={styles.erro}>{erros.geral}</Text>
+            )}
              {/* Botão */}
             <TouchableOpacity
                 style={[
