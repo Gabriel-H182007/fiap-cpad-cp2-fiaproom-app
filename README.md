@@ -101,6 +101,41 @@ Separação clara entre telas
 
 Navegação fluida entre funcionalidades
 
+## Diferencial Implementado
+📌 Diferencial escolhido
+
+O grupo implementou o uso de notificações locais com Expo Notifications, incluindo notificações imediatas e notificações agendadas.
+
+💡 Justificativa
+
+Esse diferencial foi escolhido porque agrega valor direto à experiência do usuário, tornando o aplicativo mais útil no dia a dia.
+
+Ao realizar uma reserva, o usuário:
+
+recebe uma confirmação instantânea, garantindo que a ação foi concluída com sucesso
+recebe um lembrete automático antes do horário da reserva, evitando esquecimentos
+
+Essa funcionalidade aproxima o aplicativo de soluções reais utilizadas no mercado, aumentando a praticidade e a confiabilidade do sistema.
+
+⚙️ Como foi implementado (resumo técnico)
+
+A funcionalidade foi desenvolvida utilizando a biblioteca Expo Notifications, responsável pelo gerenciamento de notificações locais no ambiente React Native com Expo.
+
+A implementação inclui:
+
+Configuração inicial de permissões para envio de notificações no dispositivo
+Disparo de notificação imediata após a confirmação da reserva
+Cálculo do horário da reserva com base nos dados selecionados
+Criação de uma notificação agendada, programada para ser enviada alguns minutos antes do início da reserva
+
+Utilização do método:
+
+Notifications.scheduleNotificationAsync()
+
+para gerenciar tanto notificações instantâneas quanto futuras
+
+Essa abordagem garante uma experiência mais dinâmica, automatizada e alinhada com boas práticas de desenvolvimento mobile.
+
 # 📘 Proximos Passos
 
 
