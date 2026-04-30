@@ -106,14 +106,9 @@ Navegação fluida entre funcionalidades
 
 ## O que o grupo implementaria com mais tempo
 
-## Melhorar o visual do app ## 
-Ajustar cores, tamanhos e organização das telas para deixar mais bonito e fácil de usar
-
 ## Adicionar mais telas ##
 Criar novas funcionalidades ou páginas para deixar o app mais completo
 
-## Adicionar validações simples ##
-Ex: impedir campos vazios ou mostrar mensagem de erro
 
 ## Melhorar navegação ## 
 Ajustar botões e fluxo entre telas para ficar mais intuitivo 
