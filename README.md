@@ -101,10 +101,10 @@ Separação clara entre telas
 
 Navegação fluida entre funcionalidades
 
-## Diferencial Implementado
-📌 Diferencial escolhido
+## 📌 Diferencial Implementado
 
 O grupo implementou o uso de notificações locais com Expo Notifications, incluindo notificações imediatas e notificações agendadas.
+
 ------------------------------------------------------------------------------------------------------------------------------------
 
 ## 💡 Justificativa
