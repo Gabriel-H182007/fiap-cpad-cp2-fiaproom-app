@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'expo-router';
+import { AppDataContext } from '../../context/AppDataContext'; 
 
 const cores = {
   fundo: '#121212',
@@ -12,26 +13,34 @@ const cores = {
 
 export default function Salas() {
   const router = useRouter();
-  const [salas, setSalas] = useState([]);
+  
+  
+  const { reservas } = useContext(AppDataContext);
+  
+  const [salasLivres, setSalasLivres] = useState([]);
 
   useEffect(() => {
     const laboratorios = [
-      { sala: '103', andar: '1', unidade: 'Paulista', horario:'7:10 - 11:50', livre: true },
-      { sala: '205', andar: '2', unidade: 'Paulista', horario:'18:10 - 22:50', livre: false },
-      { sala: '403', andar: '4', unidade: 'Paulista', horario:'7:10 - 11:50', livre: true },
-      { sala: '507', andar: '5', unidade: 'Paulista', horario:'18:10 - 22:50', livre: true },
-      { sala: '608', andar: '6', unidade: 'Paulista', horario:'18:10 - 22:50', livre: true },
-      { sala: '706', andar: '7', unidade: 'Paulista', horario:'7:10 - 11:50', livre: false },
+      { id: '1', sala: '103', andar: '1', unidade: 'Paulista', horario:'7:10 - 11:50', livre: true },
+      { id: '2', sala: '205', andar: '2', unidade: 'Paulista', horario:'18:10 - 22:50', livre: false },
+      { id: '3', sala: '403', andar: '4', unidade: 'Paulista', horario:'7:10 - 11:50', livre: true },
+      { id: '4', sala: '507', andar: '5', unidade: 'Paulista', horario:'18:10 - 22:50', livre: true },
+      { id: '5', sala: '608', andar: '6', unidade: 'Paulista', horario:'18:10 - 22:50', livre: true },
+      { id: '6', sala: '706', andar: '7', unidade: 'Paulista', horario:'7:10 - 11:50', livre: false },
     ];
-    setSalas(laboratorios);
-  }, []);
 
-  const salasLivres = salas.filter(s => s.livre);
+    
+    const disponiveis = laboratorios.filter(
+        lab => lab.livre && !reservas?.some(reserva => reserva.id === lab.id)
+    );
+
+    setSalasLivres(disponiveis);
+  }, [reservas]);
 
   return (
     <FlatList
       data={salasLivres}
-      keyExtractor={(item) => item.sala}
+      keyExtractor={(item) => item.id} 
       contentContainerStyle={styles.container}
 
       ListHeaderComponent={
@@ -53,7 +62,7 @@ export default function Salas() {
       ListFooterComponent={
         <>
           <TouchableOpacity style={styles.botao} onPress={() => router.push('/reservas')}>
-            <Text style={styles.botaoTexto}>Reservar sala</Text>
+            <Text style={styles.botaoTexto}>Ir para Reservas</Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => router.back()}>
@@ -63,7 +72,7 @@ export default function Salas() {
       }
 
       ListEmptyComponent={
-        <Text style={styles.vazio}>Nenhuma sala disponível</Text>
+        <Text style={styles.vazio}>Nenhuma sala disponível no momento.</Text>
       }
     />
   );
@@ -127,18 +136,22 @@ const styles = StyleSheet.create({
 
   botaoTexto: {
     color: '#fff',
-    fontWeight: '600'
+    fontWeight: '600',
+    fontSize: 16
   },
 
   voltar: {
     textAlign: 'center',
     marginTop: 15,
-    color: cores.principal
+    color: cores.principal,
+    fontWeight: '600',
+    fontSize: 16
   },
 
   vazio: {
-    color: cores.texto,
+    color: cores.textoSecundario,
     textAlign: 'center',
-    marginTop: 40
+    marginTop: 40,
+    fontStyle: 'italic'
   }
 });

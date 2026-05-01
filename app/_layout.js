@@ -1,4 +1,5 @@
 import { AuthProvider, useAuth } from "../context/AuthContext";
+import { AppDataProvider } from "../context/AppDataContext"; 
 import { Stack } from "expo-router";
 import { View, Text } from "react-native";
 import { useEffect } from "react";
@@ -13,7 +14,7 @@ Notifications.setNotificationHandler({
 });
 
 function Rotas() {
-  const { user, loading } = useAuth();
+  const { user, loading } = useAuth(); //[cite: 7]
 
   if (loading) {
     return (
@@ -37,19 +38,22 @@ function Rotas() {
 export default function Layout() {
   useEffect(() => {
     async function configurarNotificacoes() {
-      const { status } = await Notifications.requestPermissionsAsync();
+      const { status } = await Notifications.requestPermissionsAsync(); //[cite: 7]
 
       if (status !== "granted") {
-        alert("Permita notificações para receber lembretes!");
+        alert("Permita notificações para receber lembretes!"); //[cite: 7]
       }
     }
 
-    configurarNotificacoes();
+    configurarNotificacoes(); //[cite: 7]
   }, []);
 
   return (
+    
     <AuthProvider>
-      <Rotas />
+      <AppDataProvider>
+        <Rotas />
+      </AppDataProvider>
     </AuthProvider>
   );
 }
