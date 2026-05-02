@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { useAuth } from "../../context/AuthContext";
 import {
   View, Text, TextInput, TouchableOpacity,
-  StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert
+  StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert, ActivityIndicator
 } from 'react-native';
 import { useRouter } from "expo-router";
 
@@ -186,9 +186,14 @@ export default function Cadastro() {
           onPress={handleCadastro}
           disabled={carregando}
         >
-          <Text style={styles.botaoTexto}>
-            {carregando ? 'Enviando...' : 'Cadastrar'}
-          </Text>
+        {carregando ? (
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <ActivityIndicator color="#fff" />
+            <Text style={{ color: '#fff', marginLeft: 10 }}>Enviando...</Text>
+          </View>
+        ) : (
+          <Text style={styles.botaoTexto}>Cadastrar</Text>
+        )}
         </TouchableOpacity>
 
       </ScrollView>

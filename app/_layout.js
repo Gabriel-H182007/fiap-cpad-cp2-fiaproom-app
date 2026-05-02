@@ -1,7 +1,7 @@
 import { AuthProvider, useAuth } from "../context/AuthContext";
 import { AppDataProvider } from "../context/AppDataContext"; 
 import { Stack } from "expo-router";
-import { View, Text } from "react-native";
+import { View, Text,  ActivityIndicator } from "react-native";
 import { useEffect } from "react";
 import * as Notifications from "expo-notifications";
 
@@ -18,8 +18,8 @@ function Rotas() {
 
   if (loading) {
     return (
-      <View>
-        <Text>Carregando...</Text>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#FF2D6F" />
       </View>
     );
   }

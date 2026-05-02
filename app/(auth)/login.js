@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import {
   View, TextInput, Text, TouchableOpacity,
-  StyleSheet, KeyboardAvoidingView, ScrollView, Alert, Platform
+  StyleSheet, KeyboardAvoidingView, ScrollView, Alert, Platform, ActivityIndicator
 } from "react-native";
 import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "expo-router";
@@ -139,9 +139,14 @@ export default function Login() {
           onPress={handleLogin}
           disabled={carregando}
         >
-          <Text style={styles.botaoTexto}>
-            {carregando ? 'Entrando...' : 'Entrar'}
-          </Text>
+        {carregando ? (
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <ActivityIndicator color="#fff" />
+            <Text style={{ color: '#fff', marginLeft: 10 }}>Entrando...</Text>
+          </View>
+        ) : (
+          <Text style={styles.botaoTexto}>Entrar</Text>
+        )}
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => router.push('/(auth)/cadastro')}>
