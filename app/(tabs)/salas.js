@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, TextInput  } from 'react-native';
 import { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'expo-router';
 import { AppDataContext } from '../../context/AppDataContext'; 
@@ -8,7 +8,7 @@ const cores = {
   card: '#1E1E1E',
   principal: '#FF2D6F',
   texto: '#FFFFFF',
-  textoSecundario: '#AAAAAA'
+  textoSecundario: '#FFF'
 };
 
 export default function Salas() {
@@ -18,15 +18,19 @@ export default function Salas() {
   const { reservas } = useContext(AppDataContext);
   
   const [salasLivres, setSalasLivres] = useState([]);
+  const[buscar, setBuscar] = useState('');
+
 
   useEffect(() => {
     const laboratorios = [
       { id: '1', sala: '103', andar: '1', unidade: 'Paulista', horario:'7:10 - 11:50', livre: true },
       { id: '2', sala: '205', andar: '2', unidade: 'Paulista', horario:'18:10 - 22:50', livre: false },
-      { id: '3', sala: '403', andar: '4', unidade: 'Paulista', horario:'7:10 - 11:50', livre: true },
-      { id: '4', sala: '507', andar: '5', unidade: 'Paulista', horario:'18:10 - 22:50', livre: true },
-      { id: '5', sala: '608', andar: '6', unidade: 'Paulista', horario:'18:10 - 22:50', livre: true },
-      { id: '6', sala: '706', andar: '7', unidade: 'Paulista', horario:'7:10 - 11:50', livre: false },
+      { id: '3', sala: '302', andar: '3', unidade: 'Paulista', horario:'18:10 - 22:50', livre: false },
+      { id: '4', sala: '403', andar: '4', unidade: 'Paulista', horario:'7:10 - 11:50', livre: true },
+      { id: '5', sala: '507', andar: '5', unidade: 'Paulista', horario:'18:10 - 22:50', livre: true },
+      { id: '6', sala: '608', andar: '6', unidade: 'Paulista', horario:'18:10 - 22:50', livre: true },
+      { id: '7', sala: '705', andar: '7', unidade: 'Paulista', horario:'7:10 - 11:50', livre: true},
+      { id: '8', sala: '707', andar: '7', unidade: 'Paulista', horario:'18:10 - 22:50', livre: true },
     ];
 
     
@@ -34,8 +38,13 @@ export default function Salas() {
         lab => lab.livre && !reservas?.some(reserva => reserva.id === lab.id)
     );
 
-    setSalasLivres(disponiveis);
-  }, [reservas]);
+    const salasFiltradas = disponiveis.filter(
+      lab => lab.sala.startsWith(buscar) ||lab.andar === buscar
+    );
+
+
+    setSalasLivres(salasFiltradas);
+  }, [reservas, buscar]);
 
   return (
     <FlatList
@@ -44,14 +53,22 @@ export default function Salas() {
       contentContainerStyle={styles.container}
 
       ListHeaderComponent={
-        <Text style={styles.titulo}>Salas disponíveis</Text>
+        <>
+          <Text style={styles.titulo}>🔎 Salas disponíveis</Text>
+          <TextInput
+              placeholder="Busque salas por número ou andar aqui"
+              value={buscar}
+              onChangeText={setBuscar}
+              style={styles.inputBuscar}
+            />
+        </> 
       }
 
       renderItem={({ item }) => (
         <View style={styles.card}>
-          <Text style={styles.sala}>Sala {item.sala} - Andar {item.andar}</Text>
-          <Text style={styles.info}>Unidade: {item.unidade}</Text>
-          <Text style={styles.info}>Horário: {item.horario}</Text>
+          <Text style={styles.sala}>🏫 Sala {item.sala} - Andar {item.andar}</Text>
+          <Text style={styles.info}>🏢 Unidade: {item.unidade}</Text>
+          <Text style={styles.info}>🕒 Horário: {item.horario}</Text>
 
           <View style={styles.statusLivre}>
             <Text style={styles.textoStatus}>Disponível</Text>
@@ -62,7 +79,7 @@ export default function Salas() {
       ListFooterComponent={
         <>
           <TouchableOpacity style={styles.botao} onPress={() => router.push('/reservas')}>
-            <Text style={styles.botaoTexto}>Ir para Reservas</Text>
+            <Text style={styles.botaoTexto}>📅 Ir para Reservas</Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => router.back()}>
@@ -91,6 +108,15 @@ const styles = StyleSheet.create({
     color: cores.texto,
     textAlign: 'center',
     marginBottom: 20
+  },
+
+   inputBuscar:{
+    flex: 1, 
+    padding: 14,
+    fontSize: 16,
+    backgroundColor: '#fff', 
+    borderRadius: 10, 
+    marginBottom: 16
   },
 
   card: {

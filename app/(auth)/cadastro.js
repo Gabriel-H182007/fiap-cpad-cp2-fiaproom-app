@@ -67,13 +67,13 @@ export default function Cadastro() {
     if (!senha) {
       e.senha = 'Senha obrigatória';
     } else if (senha.length < 6) {
-      e.senha = 'Mínimo 6 caracteres';
+      e.senha = 'Senha deve ter no mínimo 6 caracteres';
     }
 
     if (!confirmarSenha) {
       e.confirmarSenha = 'Confirme a senha';
     } else if (senha !== confirmarSenha) {
-      e.confirmarSenha = 'Senhas diferentes';
+      e.confirmarSenha = 'Senha diferente da informada acima';
     }
 
     setErros(e);
@@ -93,7 +93,7 @@ export default function Cadastro() {
       setCarregando(true);
       await cadastro(nome, email, senha);
       limparForm();
-      Alert.alert('Sucesso', 'Cadastro realizado!');
+      Alert.alert('Sucesso!', 'Cadastro realizado! 🎉');
       router.replace('/(auth)/login');
     } catch (e) {
       console.log(e);
@@ -109,7 +109,7 @@ export default function Cadastro() {
     >
       <ScrollView contentContainerStyle={styles.container}>
         
-        <Text style={styles.titulo}>Cadastro</Text>
+        <Text style={styles.titulo}>📝Cadastro</Text>
         <Text style={styles.subTitulo}>Crie sua conta</Text>
 
         <Campo label="Nome" erro={erros.nome}>
@@ -148,6 +148,9 @@ export default function Cadastro() {
               value={senha}
               onChangeText={setSenha}
               secureTextEntry={!senhaVisivel}
+              autoCapitalize="none"
+              returnKeyType="next"
+              onSubmitEditing={() => confirmarSenhaRef.current.focus()}
               style={styles.inputSenha}
             />
             <Text onPress={() => setSenhaVisivel(!senhaVisivel)} style={styles.olho}>
@@ -165,6 +168,8 @@ export default function Cadastro() {
               value={confirmarSenha}
               onChangeText={setConfirmarSenha}
               secureTextEntry={!confirmarSenhaVisivel}
+              autoCapitalize="none"
+              returnKeyType="next"
               style={styles.inputSenha}
             />
             <Text onPress={() => setConfirmarSenhaVisivel(!confirmarSenhaVisivel)} style={styles.olho}>

@@ -19,12 +19,14 @@ export default function Reservas() {
   useEffect(() => {
     
     const laboratorios = [
-      { id: '1', sala: '103', andar: '1', unidade: 'Paulista', horario: '7:10 - 11:50', livre: true },
-      { id: '2', sala: '205', andar: '2', unidade: 'Paulista', horario: '18:10 - 22:50', livre: false },
-      { id: '3', sala: '403', andar: '4', unidade: 'Paulista', horario: '7:10 - 11:50', livre: true },
-      { id: '4', sala: '507', andar: '5', unidade: 'Paulista', horario: '18:10 - 22:50', livre: true },
-      { id: '5', sala: '608', andar: '6', unidade: 'Paulista', horario: '18:10 - 22:50', livre: true },
-      { id: '6', sala: '706', andar: '7', unidade: 'Paulista', horario: '7:10 - 11:50', livre: false },
+      { id: '1', sala: '103', andar: '1', unidade: 'Paulista', horario:'7:10 - 11:50', livre: true },
+      { id: '2', sala: '205', andar: '2', unidade: 'Paulista', horario:'18:10 - 22:50', livre: false },
+      { id: '3', sala: '302', andar: '3', unidade: 'Paulista', horario:'18:10 - 22:50', livre: false },
+      { id: '4', sala: '403', andar: '4', unidade: 'Paulista', horario:'7:10 - 11:50', livre: true },
+      { id: '5', sala: '507', andar: '5', unidade: 'Paulista', horario:'18:10 - 22:50', livre: true },
+      { id: '6', sala: '608', andar: '6', unidade: 'Paulista', horario:'18:10 - 22:50', livre: true },
+      { id: '7', sala: '705', andar: '7', unidade: 'Paulista', horario:'7:10 - 11:50', livre: true},
+      { id: '8', sala: '707', andar: '7', unidade: 'Paulista', horario:'18:10 - 22:50', livre: true },
     ];
 
   
@@ -88,8 +90,8 @@ export default function Reservas() {
           <Text style={styles.titulo}>Reserva confirmada ✅</Text>
 
           <Text style={styles.mensagem}>
-            Sala {reservaConfirmada.sala} - Andar {reservaConfirmada.andar}
-            {"\n"}Horário: {reservaConfirmada.horario}
+            🏫 Sala {reservaConfirmada.sala} - Andar {reservaConfirmada.andar}
+            {"\n"}🕒 Horário: {reservaConfirmada.horario}
           </Text>
 
           <TouchableOpacity style={styles.botao} onPress={() => setReservaConfirmada(null)}>
@@ -116,9 +118,9 @@ export default function Reservas() {
           ) : (
             reservas.map((item) => (
               <View key={item.id} style={styles.cardReserva}>
-                <Text style={styles.sala}>Sala {item.sala} - Andar {item.andar}</Text>
-                <Text style={styles.info}>Unidade: {item.unidade}</Text>
-                <Text style={styles.horario}>Horário: {item.horario}</Text>
+                <Text style={styles.sala}>🏫 Sala {item.sala} - Andar {item.andar}</Text>
+                <Text style={styles.info}>🏢 Unidade: {item.unidade}</Text>
+                <Text style={styles.horario}>🕒 Horário: {item.horario}</Text>
                 
                 <TouchableOpacity style={styles.botaoCancelar} onPress={() => removeReserva(item.id)}>
                   <Text style={styles.textoBotao}>❌ Cancelar Reserva</Text>
@@ -136,9 +138,9 @@ export default function Reservas() {
 
       renderItem={({ item }) => (
         <TouchableOpacity style={styles.card} onPress={() => handleReservar(item)}>
-          <Text style={styles.sala}>Sala {item.sala} - Andar {item.andar}</Text>
-          <Text style={styles.info}>Unidade: {item.unidade}</Text>
-          <Text style={styles.horario}>Horário: {item.horario}</Text>
+          <Text style={styles.sala}>🏫 Sala {item.sala} - Andar {item.andar}</Text>
+          <Text style={styles.info}>🏢 Unidade: {item.unidade}</Text>
+          <Text style={styles.horario}>🕒 Horário: {item.horario}</Text>
 
           <View style={styles.botaoReserva}>
             <Text style={styles.textoBotao}>Reservar</Text>
@@ -162,11 +164,11 @@ const cores = {
   principal: '#FF2D6F',
   cancelar: '#D32F2F', 
   texto: '#FFFFFF',
-  textoSecundario: '#AAAAAA'
+  textoSecundario: '#FFF'
 };
 
 const styles = StyleSheet.create({
-  container: {
+   container: {
     flexGrow: 1,
     backgroundColor: cores.fundo,
     padding: 20

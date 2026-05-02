@@ -30,7 +30,7 @@ export default function Fiaproom() {
   return (
     <View style={styles.container}>
 
-      <Text style={styles.saudacao}>👋 Bem-vindo</Text>
+      <Text style={styles.saudacao}>👋Seja bem-vindo ao FiapRoom!</Text>
 
       <Image
         source={{ uri: 'https://www.fiap.com.br/wp-content/themes/fiap2016/images/sharing/fiap.png' }}
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     backgroundColor: cores.principal,
     padding: 14,
     borderRadius: 10,
-    marginBottom: 12,
+    marginBottom: 14,
     width: '100%',
     alignItems: 'center'
   },
@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
     backgroundColor: cores.erro,
     padding: 14,
     borderRadius: 10,
-    marginTop: 10,
     width: '100%',
     alignItems: 'center'
   },

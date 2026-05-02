@@ -70,7 +70,7 @@ export default function Login() {
       const sucesso = await login(email, senha);
 
       if (sucesso) {
-        Alert.alert('Sucesso', `Bem-vindo, ${email}`);
+        Alert.alert('Login realizado!', `Bem-vindo(a), ${email}! 🎉`);
         router.replace("/(tabs)");
       } else {
         setErros({ geral: 'E-mail ou senha incorretos' });
@@ -90,7 +90,7 @@ export default function Login() {
     >
       <ScrollView contentContainerStyle={styles.container}>
 
-        <Text style={styles.titulo}>Login</Text>
+        <Text style={styles.titulo}>🔐Login</Text>
         <Text style={styles.subTitulo}>Entre na sua conta</Text>
 
         <Campo label="E-mail" erro={erros.email}>

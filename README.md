@@ -27,6 +27,9 @@ Para a CP2, o grupo fez as seguintes mudanças / melhorias:
 * **Botão de Logout**: Funcionalidade que permite o usuário sair da sua conta e do App, retornando assim a tela de Login.
 * **Validação de formulários**: Impede que o usuário deixe um campo vazio ou incorreto.
 * **Feedback visual**: Um feedback visual de erros, quando o usuários esquece de preencher um campo ou preenche incorretamente, e um de sucesso quando o formulário é enviado.
+* **Busca de Salas**: Um campo de busca, em que o usuário consegue procurar as salas por número ou andar.
+* **Notificação de agendamento**: Ao reservar uma sala o usuário recebe uma notificação de sucesso, informando a ele a sala e o horário da reserva.
+
 
 ---
 
