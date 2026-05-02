@@ -75,7 +75,7 @@ Escaneie o QR Code que aparecerá no terminal usando o aplicativo Expo Go no seu
 
 Ou pressione a no terminal para abrir no emulador Android, ou i para o simulador iOS.
 
-## Demonstração
+## Demonstração.
 ![Criação de conta](./assets/criacaoConta.gif)
 ![Tela de login](./assets/telaLogin.gif)
 ![Reserva de sala](./assets/reservaSala.gif)
