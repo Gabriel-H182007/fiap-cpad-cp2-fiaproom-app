@@ -47,6 +47,7 @@ Para a CP2, o grupo fez as seguintes mudanças / melhorias:
 Certifique-se de ter as seguintes ferramentas instaladas na sua máquina:
 * [Node.js](https://nodejs.org/en/) (versão X.X ou superior)
 * [Expo CLI](https://docs.expo.dev/get-started/installation/) (`npm install -g expo-cli`)
+* [Expo Notifications] (`npx expo install expo-notifications expo-linking`)
 * Aplicativo **Expo Go** instalado no seu smartphone (Android ou iOS) ou um emulador configurado.
 
 ### Passo a Passo
